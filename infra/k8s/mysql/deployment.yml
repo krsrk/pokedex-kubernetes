@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: krsrk/pokedex:mysql8.0
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: mysql-env
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "16Mi"
+          ports:
+            - containerPort: 3306
